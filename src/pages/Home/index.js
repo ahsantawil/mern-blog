@@ -1,25 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { BlogItem, Button, Gap } from "../../components";
-import "./home.scss";
 import { useHistory } from "react-router-dom";
-import Axios from 'axios';
+import { useDispatch, useSelector } from "react-redux";
+import { setDataBlog } from "../../config/redux/action";
+import "./home.scss";
 
 const Home = () => {
 
-  const [dataBlog, setDataBlog] = useState([]);
+  const {dataBlog} = useSelector(state => state.homeReducer);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    Axios.get('http://127.0.0.1:4000/v1/blog/posts?page=1&perPage=6')
-      .then(result => {
-        console.log('data API', result.data);
-        const responeAPI = result.data;
-
-        setDataBlog(responeAPI.data);
-      })
-      .catch(err => {
-        console.log('error:', err);
-    })
-  }, [])
+    dispatch(setDataBlog())
+  }, [dispatch])
 
   const history = useHistory();
   return (
